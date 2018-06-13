@@ -7,19 +7,19 @@ class MonthlyBudjet(models.Model):
 
 
 class Category(models.Model):
-    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE)
-    budjet = models.IntegerField()
+    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE, null=True)
+    budjet = models.IntegerField(default=0)
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=256, blank=True, null=True)
 
 
 class Income(models.Model):
-    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE)
+    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE, null=True)
     amount = models.IntegerField()
     description = models.CharField(max_length=256, blank=True, null=True)
 
 
 class Expense(models.Model):
-    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE)
+    month = models.ForeignKey('MonthlyBudjet', on_delete=models.CASCADE, null=True)
     category = models.ForeignKey('Category', null=True, on_delete=models.SET_NULL)
-    amount = models.DecimalField()
+    amount = models.DecimalField(max_digits=10, decimal_places=3)
