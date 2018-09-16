@@ -1,25 +1,29 @@
 import * as types from '../types'
+import { store } from '../../store/store'
 
 const state = {
-  categories: {
-    rent: {id: 0, planned: 3000, spent: 0},
-    bills: {id: 1, planned: 1500, spent: 2000},
-    groceries: {id: 2, planned: 2000, spent: 1500},
-    loans: {id: 3, planned: 1760, spent: 1760}
-  }
+  expenses: [
+    {categoryId: 0, id: 0, periodId: 1, total: 3000},
+    {categoryId: 1, id: 1, periodId: 1, total: 2000},
+    {categoryId: 2, id: 2, periodId: 1, total: 1500},
+    {categoryId: 3, id: 3, periodId: 1, total: 1760}
+  ]
 }
 
 const getters = {
-  [types.CATEGORIES]: state => {
-    return state.categories
+  [types.EXPENSES]: state => {
+    const periodId = store.getters[types.ACTIVE_PERIOD]
+    return state.expenses.filter((cat) => cat.periodId === parseInt(periodId))
   },
   [types.TOTAL_EXPENSE]: state => {
+    const periodId = store.getters[types.ACTIVE_PERIOD]
     const reduce = (total, expense) => {
-      total.planned += expense.planned
-      total.spent += expense.spent
+      if (expense.periodId === parseInt(periodId)) {
+        total.total += expense.total
+      }
       return total
     }
-    return Object.values(state.categories).reduce(reduce, {planned: 0, spent: 0})
+    return Object.values(state.expenses).reduce(reduce, {total: 0})
   }
 }
 

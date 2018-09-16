@@ -1,5 +1,5 @@
 <template>
-  <b-card header="Expense">
+  <b-card header="Main Budjet">
     <b-row>
       <b-col>Category</b-col>
       <b-col>planned</b-col>

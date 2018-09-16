@@ -4,7 +4,7 @@
         <app-income-main></app-income-main>
       </b-col>
       <b-col>
-        <app-expense-main></app-expense-main>
+        <app-budjet-main></app-budjet-main>
       </b-col>
       <b-col cols="3">
         <app-summary-main></app-summary-main>
@@ -16,7 +16,7 @@
 import { mapGetters, mapMutations } from 'vuex'
 import * as types from '../../store/types.js'
 import AppIncomeMain from '../Income/IncomeMain'
-import AppExpenseMain from '../Expense/ExpenseMain'
+import AppBudjetMain from '../Budjet/BudjetMain'
 import AppSummaryMain from '../Summary/SummaryMain'
 
 export default {
@@ -33,7 +33,7 @@ export default {
   },
   components: {
     AppIncomeMain,
-    AppExpenseMain,
+    AppBudjetMain,
     AppSummaryMain
   }
 }
