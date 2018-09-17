@@ -3,10 +3,11 @@ import * as types from '../types'
 
 const state = {
   categories: {
-    0: {description: 'rent', planned: 3000, spent: 0},
-    1: {description: 'bills', planned: 1500, spent: 2000},
-    2: {description: 'groceries', planned: 2000, spent: 1500},
-    3: {description: 'loans', planned: 1760, spent: 1760}
+    0: {description: 'rent'},
+    1: {description: 'bills'},
+    2: {description: 'groceries'},
+    3: {description: 'loans', planned: 1760, spent: 1760},
+    4: {description: 'other'}
   }
 }
 

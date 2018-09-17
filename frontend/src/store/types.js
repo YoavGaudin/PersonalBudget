@@ -2,6 +2,7 @@
 export const INCOMES = 'Income/INCOMES'
 export const CATEGORIES = 'ExpenseCategory/CATEGORIES'
 export const EXPENSES = 'Expense/EXPENSES'
+export const BUDJET = 'Budjet/BUDJET'
 export const TOTAL_EXPENSE = 'Expense/TOTAL_EXPENSE'
 export const TOTAL_INCOME = 'Income/TOTAL_INCOME'
 export const PERIODS = 'Period/PERIODS'

@@ -14,6 +14,10 @@ axios.defaults.baseURL = 'https://personal-budjet.firebaseio.com'
 Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon as fa} from '@fortawesome/vue-fontawesome'
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
