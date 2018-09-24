@@ -3,8 +3,9 @@ import Vuex from 'vuex'
 import income from './modules/Income'
 import expense from './modules/Expense'
 import expenseCategory from './modules/ExpenseCategory'
-import budjet from './modules/Budjet'
+import budget from './modules/Budget'
 import period from './modules/Period'
+import configuration from './modules/Configuration'
 
 import actions from './actions'
 import getters from './getters'
@@ -23,7 +24,8 @@ export const store = new Vuex.Store({
     income,
     expense,
     expenseCategory,
-    budjet,
-    period
+    budget,
+    period,
+    configuration
   }
 })

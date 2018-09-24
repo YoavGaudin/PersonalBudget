@@ -6,10 +6,6 @@
     <b-row align-h="center"><b-col>
       <app-periods/>
     </b-col></b-row>
-    <b-row><b-col>
-      <router-view/>
-    </b-col></b-row>
-
   </b-container>
 </template>
 
