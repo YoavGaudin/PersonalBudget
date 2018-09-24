@@ -5,8 +5,7 @@
               :options="categoryOptions"></b-select>
     <b-input class="mr-2"
              type="text"
-             v-model.lazy="total"
-             v-money="money"></b-input>
+             v-model="total"<\b-input>
     <b-input class="mr-2"
              type="text"
              v-model="desc"

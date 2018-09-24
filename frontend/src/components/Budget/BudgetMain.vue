@@ -1,6 +1,5 @@
 <template>
   <b-card header="Main Budjet" v-if="budget">
-    <div v-money="money">123.5</div>
     <b-table small hover bordered fixed :fields="fields" :items="items">
       <template slot="planned" slot-scope="data">
         <span v-if="categoryEditMode(data.index, 'planned')" @keypress.enter="exitEditMode(data.index)">
@@ -8,8 +7,7 @@
                         v-model="budget.plannedExpenses[data.index].planned"></b-form-input>
         </span>
         <div v-else
-             v-money="money"
-             @click.stop="enterEditMode(data.index, 'planned')">{{ data.value }}{{ data.key }}
+             @click.stop="enterEditMode(data.index, 'planned')">{{ data.value | currency }}
         </div>
       </template>
       <template slot="spent" slot-scope="data">
@@ -17,8 +15,7 @@
           <b-form-input size="sm" v-focus type="text" v-model="budget.plannedExpenses[data.index].spent"></b-form-input>
         </span>
         <div v-else
-             v-money="money"
-             @click.stop="enterEditMode(data.index, 'spent')">{{ data.value }}{{ data.key }}
+             @click.stop="enterEditMode(data.index, 'spent')">{{ data.value | currency }}
         </div>
       </template>
     </b-table>
