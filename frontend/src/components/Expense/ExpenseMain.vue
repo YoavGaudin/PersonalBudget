@@ -16,6 +16,7 @@
   import {mapGetters, mapMutations} from 'vuex'
   import * as types from '../../store/types.js'
   import AppNewExpenseForm from './NewExpenseForm'
+  import {format} from '../../v-money/utils'
 
   export default {
     name: "ExpenseMain",
@@ -25,7 +26,7 @@
         fields: [
           {key: 'category', label: 'Category'},
           {key: 'desc', label: 'Description'},
-          {key: 'total', label: 'Value'},
+          {key: 'total', label: 'Value', formatter: this.currencyFormatter},
         ]
       }
     },
@@ -43,7 +44,10 @@
     methods: {
       ...mapMutations({
         addExpense: types.ADD_EXPENSE
-      })
+      }),
+      currencyFormatter(value) {
+        return format(value)
+      }
     },
     components: {
       AppNewExpenseForm

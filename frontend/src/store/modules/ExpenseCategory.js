@@ -3,12 +3,12 @@ import * as types from '../types'
 
 const state = {
   categories: {
-    0: {description: 'rent'},
-    1: {description: 'bills'},
-    2: {description: 'groceries'},
-    3: {description: 'loans', planned: 1760, spent: 1760},
-    4: {description: 'other'}
-  }
+    rent: {description: 'House rent'},
+    bills: {description: 'Bills'},
+    groceries: {description: 'Groceries'},
+    loans: {description: 'Bank loans'},
+    other: {description: 'Other'}
+  },
 }
 
 const getters = {
@@ -18,7 +18,9 @@ const getters = {
 }
 
 const mutations = {
-
+  [types.ADD_CATEGORY]: (state, payload) => {
+    state.categories = Object.assign({}, state.categories, payload)
+  }
 }
 
 const actions = {

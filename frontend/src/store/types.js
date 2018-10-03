@@ -1,3 +1,4 @@
+// ############ GETTERS ############
 // Getters - Budget
 export const BUDGET = 'Budget/BUDGET'
 export const TOTAL_EXPENSE = 'Budget/TOTAL_EXPENSE'
@@ -19,6 +20,7 @@ export const ACTIVE_PERIOD = 'Period/ACTIVE_PERIOD'
 // Getters - Configuration
 export const MONEY = 'Configuration/MONEY'
 
+// ############ MUTATIONS ############
 // Mutations - Period
 export const ADD_PERIOD = 'Period/ADD_PERIOD'
 export const SET_ACTIVE_PERIOD = 'Period/SET_ACTIVE_PERIOD'
@@ -26,10 +28,23 @@ export const SET_ACTIVE_PERIOD = 'Period/SET_ACTIVE_PERIOD'
 // Mutations - Income
 export const ADD_INCOME = 'Income/ADD_INCOME'
 
+// Mutations - Category
+export const ADD_CATEGORY = 'ExpenseCategory/ADD_CATEGORY'
+
 // Mutations - Expense
 export const ADD_EXPENSE = 'Expense/ADD_EXPENSE'
 
 // Mutations - Budget
 export const ADD_BUDGET = 'Budget/ADD_BUDGET'
 export const SET_BUDGET = 'Budget/SET_BUDGET'
+export const SET_ALL_BUDGETS = 'Budget/SET_ALL_BUDGETS'
 export const UPDATE_BUDGET = 'Budget/SET_BUDGET'
+
+
+// ############ ACTIONS ############
+export const SAVE_DATA = 'SAVE_DATA'
+export const LOAD_DATA = 'LOAD_DATA'
+
+// Actions - Budget
+export const SAVE_BUDGETS = 'Budget/SAVE_BUDGETS'
+export const LOAD_BUDGETS = 'Budget/LOAD_BUDGETS'

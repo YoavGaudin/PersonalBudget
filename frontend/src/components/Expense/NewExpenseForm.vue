@@ -3,8 +3,10 @@
     <b-select class="mr-2"
               v-model="categoryId"
               :options="categoryOptions"></b-select>
-    <money-input class="mr-2"
-                 v-model="total"></money-input>
+    <b-input class="mr-2"
+             type="text"
+             v-money
+             v-model="total"></b-input>
     <b-input class="mr-2"
              type="text"
              v-model="desc"
@@ -16,7 +18,9 @@
 <script>
   import {mapGetters, mapMutations} from 'vuex'
   import * as types from '../../store/types.js'
-  import AppMoneyInput from '../utils/MoneyInput'
+  import AppMoneyInput from '../../v-money/component'
+  import money from '../../v-money/directive'
+  import {unformat} from '../../v-money/utils'
 
   export default {
     name: "NewExpenseForm",
@@ -34,8 +38,8 @@
       }),
       newExpense() {
         return {
-          categoryId: parseInt(this.categoryId),
-          total: parseFloat(this.total),
+          categoryId: this.categoryId,
+          total: unformat(this.total, 2),
           desc: this.desc
         }
       },
@@ -61,6 +65,9 @@
     },
     components: {
       moneyInput: AppMoneyInput
+    },
+    directives: {
+      money
     }
   }
 </script>

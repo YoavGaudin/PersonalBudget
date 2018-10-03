@@ -6,7 +6,7 @@ const state = {
     {id: 1, start: new Date(2018, 9, 10), end: new Date(2018, 10, 10), incomes: [], expenses: []},
     {id: 2, start: new Date(2018, 10, 10), end: new Date(2018, 11, 10), incomes: [], expenses: []}
   ],
-  activePeriod: 0
+  activePeriod: null
 }
 
 const getters = {
@@ -14,6 +14,12 @@ const getters = {
     return state.periods
   },
   [types.ACTIVE_PERIOD]: state => {
+    if (state.activePeriod) {
+      return state.activePeriod
+    }
+    const today = new Date()
+    const period = state.periods.find(p => p.start <= today && p.end > today)
+    state.activePeriod = period ? period.id : 0
     return state.activePeriod
   }
 }
@@ -30,9 +36,7 @@ const mutations = {
   }
 }
 
-const actions = {
-
-}
+const actions = {}
 
 export default {
   state,

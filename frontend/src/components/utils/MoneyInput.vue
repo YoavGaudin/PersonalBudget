@@ -1,8 +1,9 @@
 <template>
-  <b-input id="money-input"
-           type="text"
-           :value="value"
-           :formatter="handleInput"></b-input>
+  <div @keypress="handleInput">
+    <b-input id="money-input"
+             type="text"
+             :value="value"></b-input>
+  </div>
 </template>
 
 <script>
@@ -24,12 +25,12 @@
       }
     },
     methods: {
-      handleInput(value, event) {
-        const key = value.toString().replace(this.value, '')
+      handleInput(event) {
+        const key = String.fromCharCode(event.charCode)
         const decimalPosition = this.value ? this.value.indexOf('.') : 0
         console.log(decimalPosition, this.caretPosition)
         if (!isNaN(parseInt(key))) {
-
+          event.preventDefault()
           if (decimalPosition >= this.caretPosition) {
             this.integerValue += key
             this.caretPosition++
@@ -41,12 +42,30 @@
           }
 
         } else if (key === '.') {
+          event.preventDefault()
           this.caretPosition++
         }
+        if (key.match(/[a-z]/gi) !== null) {
+          event.preventDefault()
+        }
 
+        if (event.code === 'Backspace' || event.code === 'Delete') {
+          this.handleDelete()
+        }
         const myInput = document.getElementById('money-input');
         this.setCaretPosition(myInput, this.caretPosition)
-        return this.integerValue + '.' + this.decimalValue
+        this.$emit('input', this.integerValue + '.' + this.decimalValue)
+      },
+      handleDelete() {
+        const decimalPosition = this.value ? this.value.indexOf('.') : 0
+        if (decimalPosition > this.caretPosition) {
+          this.integerValue = this.integerValue.slice(0, this.integerValue.length - 1)
+        } else if (decimalPosition < this.caretPosition){
+          this.decimalValue = this.decimalValue.slice(0, this.decimalValue.length - 1)
+        } else {
+          this.caretPosition = this.caretPosition <= 0 ? this.caretPosition : this.caretPosition - 1
+        }
+        this.caretPosition = this.caretPosition <= 0 ? this.caretPosition : this.caretPosition - 1
       },
       setCaretPosition(ctrl, pos) {
         // Modern browsers

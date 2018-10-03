@@ -3,7 +3,7 @@
     <b-nav pills>
       <b-nav-item
         v-for="p in periods"
-        :active="p.id == activePeriod"
+        :active="p.id === activePeriod"
         :key="p.id"
         :to="{name: 'period', params: {periodId: p.id}}"
         @click.prevent="setActivePeriod(p.id)">

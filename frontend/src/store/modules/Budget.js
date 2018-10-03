@@ -1,27 +1,26 @@
 import * as types from '../types'
-import {store} from '../../store/store'
+import {store} from '../store'
+import axiosInstance from '../axios'
+
+const emptyBudget = {databaseId: null, periodId: null, plannedExpenses: {}}
 
 const state = {
-  budgets: [
-    {periodId: 0,
-      plannedExpenses: {
-        0: {planned: 3000, spent: 0},
-        1: {planned: 1500, spent: 2000},
-        2: {planned: 2000, spent: 1500},
-        3: {planned: 1760, spent: 1760},
-        4: {planned: 0, spent: 0}
-      }}
-  ]
+  budgets: [],
 }
 
 const getters = {
   [types.BUDGET]: state => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
-    return state.budgets.find(b => b.periodId === parseInt(periodId))
+    const budget = state.budgets.find(b => b.periodId === parseInt(periodId))
+    return budget ? budget : emptyBudget
   },
   [types.TOTAL_EXPENSE]: state => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
     const budget = state.budgets.find(budget => budget.periodId === parseInt(periodId))
+    if (!budget) {
+      state.budgets.push(Object.assign({}, emptyBudget, {periodId: periodId}))
+      return {spent: 0, planned: 0}
+    }
     if (budget) {
       return Object.values(budget.plannedExpenses).reduce((sum, e) => {
         sum.spent += e.spent
@@ -41,17 +40,36 @@ const mutations = {
   },
   [types.SET_BUDGET]: (state, payload) => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
-    let budget = state.budgets.find(b => b.periodId === parseInt(periodId))
-    if (budget) {
-      Object.assign(budget, payload)
+    const budgetIndex = state.budgets.indexOf(b => b.periodId === parseInt(periodId))
+    if (budgetIndex) {
+      const budget = Object.assign({}, state.budgets[budgetIndex], payload)
+      state.budgets.splice(budgetIndex, 1, budget)
     } else {
       [types.ADD_BUDGET](payload)
     }
+  },
+  [types.SET_ALL_BUDGETS]: (state, payload) => {
+    state.budgets = payload.slice()
   }
 }
 
 const actions = {
-
+  [types.SAVE_BUDGETS]: ({ state }) => {
+    axiosInstance.put('budgets.json', state.budgets)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        alert("Data has been saved to server")
+      })
+      .catch(e => {
+        alert("Data failed to save")
+      })
+  },
+  [types.LOAD_BUDGETS]: ({ state, commit }) => {
+    axiosInstance.get('budgets.json')
+      .then(response => {
+        commit(types.SET_ALL_BUDGETS, response.data)
+      })
+  }
 }
 
 export default {
