@@ -27,6 +27,8 @@ export const SET_ACTIVE_PERIOD = 'Period/SET_ACTIVE_PERIOD'
 
 // Mutations - Income
 export const ADD_INCOME = 'Income/ADD_INCOME'
+export const DELETE_INCOME = 'Income/DELETE_INCOME'
+export const SET_ALL_INCOMES = 'Income/SET_ALL_INCOMES'
 
 // Mutations - Category
 export const ADD_CATEGORY = 'ExpenseCategory/ADD_CATEGORY'
