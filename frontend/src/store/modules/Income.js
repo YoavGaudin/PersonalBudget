@@ -2,12 +2,7 @@ import * as types from '../types'
 import {store} from '../../store/store'
 
 const state = {
-  incomes: [
-    {id: 0, periodId: 0, label: 'salary', value: 14000},
-    {id: 1, periodId: 0, label: 'salary', value: 5000},
-    {id: 2, periodId: 1, label: 'salary', value: 11000},
-    {id: 3, periodId: 1, label: 'salary', value: 5000}
-  ]
+  incomes: []
 }
 
 const getAvailableId = (incomes) => {

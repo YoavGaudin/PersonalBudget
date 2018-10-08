@@ -1,20 +1,38 @@
 import * as types from '../types'
+import axiosInstance from "../axios";
 
 const state = {
-  periods: [
-    {id: 0, start: new Date(2018, 8, 10), end: new Date(2018, 9, 10), incomes: [], expenses: []},
-    {id: 1, start: new Date(2018, 9, 10), end: new Date(2018, 10, 10), incomes: [], expenses: []},
-    {id: 2, start: new Date(2018, 10, 10), end: new Date(2018, 11, 10), incomes: [], expenses: []}
-  ],
+  periods: [],
+  maxId: -1,
   activePeriod: null
 }
 
+const getLatestDate = (state) => {
+  if (state.periods.length === 0) {
+    let today = new Date()
+    today.setDate(10)
+    return today
+  }
+  return state.periods.reduce((latest, p) => {
+    if (p.end > latest) {
+      return p.end
+    }
+    return latest
+  }, new Date(1977, 1, 1))
+}
 const getters = {
   [types.PERIODS]: state => {
-    return state.periods
+    if (state.activePeriod !== null) {
+      const currentPeriodIndex = state.periods.findIndex(p => p.id === state.activePeriod)
+      const firstPeriodIndex = currentPeriodIndex > 1 ? currentPeriodIndex - 2 : 0
+      const lastPeriodIndex = state.periods.length > firstPeriodIndex + 6 ? firstPeriodIndex + 6 : state.periods.length
+      return state.periods.slice(firstPeriodIndex, lastPeriodIndex)
+    } else {
+      return state.periods
+    }
   },
   [types.ACTIVE_PERIOD]: state => {
-    if (state.activePeriod) {
+    if (state.activePeriod !== null) {
       return state.activePeriod
     }
     const today = new Date()
@@ -26,17 +44,43 @@ const getters = {
 
 const mutations = {
   [types.ADD_PERIOD]: (state, payload) => {
+    const newPeriod = Object.assign({}, payload)
     if (!payload.hasOwnProperty('id')) {
-      payload['id'] = state.periods.length > 0 ? state.periods[-1].id : 0
+      newPeriod['id'] = state.maxId + 1
+      state.maxId++
     }
-    state.periods.push(payload)
+    if (!payload.hasOwnProperty('start')) {
+      const start = getLatestDate(state)
+      let end = new Date(start)
+      end.setMonth(end.getMonth() + 1)
+      Object.assign(newPeriod, {start: start, end: end})
+    }
+    state.periods.push(newPeriod)
+    state.periods.sort((p1, p2) => p1.id - p2.id)
   },
   [types.SET_ACTIVE_PERIOD]: (state, payload) => {
     state.activePeriod = payload
   }
 }
 
-const actions = {}
+const actions = {
+  [types.SAVE_PERIODS]: ({state}) => {
+    axiosInstance.put('periods.json', state.periods)
+      .then(response => {
+        // JSON responses are automatically parsed.
+        alert("Data has been saved to server")
+      })
+      .catch(e => {
+        alert("Data failed to save")
+      })
+  },
+  [types.LOAD_PERIODS]: ({state, commit}) => {
+    axiosInstance.get('periods.json')
+      .then(response => {
+        response.data.forEach(period => commit(types.ADD_PERIOD, period))
+      })
+  }
+}
 
 export default {
   state,

@@ -2,9 +2,8 @@ import * as types from '../types'
 import { store } from '../../store/store'
 
 const state = {
-  expenses: [
-  ],
-  maxId: 3
+  expenses: [],
+  maxId: 0
 }
 
 const getters = {

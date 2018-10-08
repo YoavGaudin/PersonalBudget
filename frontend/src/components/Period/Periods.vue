@@ -7,8 +7,9 @@
         :key="p.id"
         :to="{name: 'period', params: {periodId: p.id}}"
         @click.prevent="setActivePeriod(p.id)">
-        {{ getMonth(p.start) }}
+        {{ p.start.toLocaleString('en-GB', { month: 'short', year: 'numeric' }) }}
       </b-nav-item>
+      <b-btn @click="addPeriod">+</b-btn>
     </b-nav>
     <hr>
     <b-row><b-col>
@@ -30,7 +31,8 @@
     },
     methods: {
       ...mapMutations({
-        setActivePeriod: types.SET_ACTIVE_PERIOD
+        setActivePeriod: types.SET_ACTIVE_PERIOD,
+        addPeriod: types.ADD_PERIOD
       }),
       getMonth(d) {
         const months = {

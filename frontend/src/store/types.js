@@ -47,6 +47,10 @@ export const UPDATE_BUDGET = 'Budget/SET_BUDGET'
 export const SAVE_DATA = 'SAVE_DATA'
 export const LOAD_DATA = 'LOAD_DATA'
 
+// Actions - Period
+export const SAVE_PERIODS = 'Period/SAVE_PERIODS'
+export const LOAD_PERIODS = 'Period/LOAD_PERIODS'
+
 // Actions - Budget
 export const SAVE_BUDGETS = 'Budget/SAVE_BUDGETS'
 export const LOAD_BUDGETS = 'Budget/LOAD_BUDGETS'
