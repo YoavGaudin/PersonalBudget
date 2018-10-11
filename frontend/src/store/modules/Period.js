@@ -49,23 +49,24 @@ const mutations = {
       newPeriod['id'] = state.maxId + 1
       state.maxId++
     }
-    if (!payload.hasOwnProperty('start')) {
-      const start = getLatestDate(state)
-      let end = new Date(start)
-      end.setMonth(end.getMonth() + 1)
-      Object.assign(newPeriod, {start: start, end: end})
-    }
+    const start = payload.hasOwnProperty('start') ? new Date(payload.start) : getLatestDate(state)
+    let end = new Date(start)
+    end.setMonth(end.getMonth() + 1)
+    Object.assign(newPeriod, {start: start, end: end})
     state.periods.push(newPeriod)
     state.periods.sort((p1, p2) => p1.id - p2.id)
   },
   [types.SET_ACTIVE_PERIOD]: (state, payload) => {
     state.activePeriod = payload
+  },
+  [types.SET_MAX_PERIOD_ID]: (state, payload) => {
+    state.maxId = payload
   }
 }
 
 const actions = {
   [types.SAVE_PERIODS]: ({state}) => {
-    axiosInstance.put('periods.json', state.periods)
+    axiosInstance.put('periods.json', state)
       .then(response => {
         // JSON responses are automatically parsed.
         alert("Data has been saved to server")
@@ -77,7 +78,10 @@ const actions = {
   [types.LOAD_PERIODS]: ({state, commit}) => {
     axiosInstance.get('periods.json')
       .then(response => {
-        response.data.forEach(period => commit(types.ADD_PERIOD, period))
+        if (response.data) {
+          response.data.periods.forEach(period => commit(types.ADD_PERIOD, period))
+          commit(types.SET_MAX_PERIOD_ID, response.data.maxId)
+        }
       })
   }
 }

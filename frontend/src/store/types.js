@@ -24,6 +24,7 @@ export const MONEY = 'Configuration/MONEY'
 // Mutations - Period
 export const ADD_PERIOD = 'Period/ADD_PERIOD'
 export const SET_ACTIVE_PERIOD = 'Period/SET_ACTIVE_PERIOD'
+export const SET_MAX_PERIOD_ID = 'Period/SET_MAX_PERIOD_ID'
 
 // Mutations - Income
 export const ADD_INCOME = 'Income/ADD_INCOME'

@@ -5,9 +5,19 @@
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
+  import {mapActions} from 'vuex'
+  import * as types from './store/types'
+  export default {
+    name: 'App',
+    methods: {
+      ...mapActions({
+        loadData: types.LOAD_DATA
+      })
+    },
+    created() {
+      this.loadData()
+    }
+  }
 </script>
 
 <style>

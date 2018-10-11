@@ -1,7 +1,5 @@
 <template>
   <b-card header="Main Budjet" v-if="budget">
-    <b-btn @click="saveBudgets">SAVE</b-btn>
-    <b-btn @click="loadBudgets">LOAD</b-btn>
     <b-table small hover bordered fixed :fields="fields" :items="items">
       <template slot="planned" slot-scope="data">
         <span v-if="cellEditMode(data.item.key, 'planned')" @keypress.enter="exitEditMode">
@@ -91,10 +89,6 @@
         addBudget: types.ADD_BUDGET,
         setBudget: types.SET_BUDGET,
         addCategory: types.ADD_CATEGORY
-      }),
-      ...mapActions({
-        saveBudgets: types.SAVE_BUDGETS,
-        loadBudgets: types.LOAD_BUDGETS
       }),
       enterEditMode(row, col) {
         this.editedCell = null

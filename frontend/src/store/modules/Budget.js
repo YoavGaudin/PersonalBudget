@@ -26,7 +26,7 @@ const getters = {
   [types.BUDGET]: state => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
     const budget = state.budgets.find((b, i) => b.periodId === parseInt(periodId) || i === state.budgets.length - 1)
-    return budget ? {periodId: periodId, plannedExpenses: copyPlannedExpenses(budget.plannedExpenses)} : emptyBudget
+    return budget ? Object.assign(copyBudget(), {periodId: periodId}) : emptyBudget
   },
   [types.TOTAL_EXPENSE]: state => {
     const budget = store.getters[types.BUDGET]
@@ -41,19 +41,22 @@ const getters = {
 const mutations = {
   [types.ADD_BUDGET]: (state, payload) => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
+    if (!payload.hasOwnProperty('periodId') || payload.periodId === null) {
+      Object.assign(payload, {periodId: periodId})
+    }
     const newBudget = copyBudget(payload)
     state.budgets.push(newBudget)
   },
   [types.SET_BUDGET]: (state, payload) => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
-    const budgetIndex = state.budgets.indexOf(b => b.periodId === parseInt(periodId))
-    if (budgetIndex >= 0) {
-      const budget = Object.assign({}, state.budgets[budgetIndex], copyPlannedExpenses(payload.plannedExpenses))
-      state.budgets.splice(budgetIndex, 1, budget)
-    } else {
-      const newBudget = Object.assign({}, {plannedExpenses: copyPlannedExpenses(payload.plannedExpenses), periodId: periodId})
-      state.budgets.push(newBudget)
+    if (!payload.hasOwnProperty('periodId') || payload.periodId === null) {
+      Object.assign(payload, {periodId: periodId})
     }
+    const budgetIndex = state.budgets.findIndex(b => b.periodId === parseInt(periodId))
+    if (budgetIndex >= 0) {
+      state.budgets.splice(budgetIndex, 1)
+    }
+    state.budgets.push(copyBudget(payload))
   },
   [types.SET_ALL_BUDGETS]: (state, payload) => {
     state.budgets = payload.slice()
@@ -74,7 +77,7 @@ const actions = {
   [types.LOAD_BUDGETS]: ({state, commit}) => {
     axiosInstance.get('budgets.json')
       .then(response => {
-        commit(types.SET_ALL_BUDGETS, response.data)
+        response.data.forEach(b => commit(types.ADD_BUDGET, b))
       })
   }
 }

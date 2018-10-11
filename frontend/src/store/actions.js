@@ -1,12 +1,13 @@
 import * as types from './types'
+import {store} from '../store/store'
 
 export default {
   [types.SAVE_DATA]: context => {
-    [types.SAVE_BUDGETS](context)
-    [types.SAVE_PERIODS](context)
+    store.dispatch(types.SAVE_BUDGETS)
+    store.dispatch(types.SAVE_PERIODS)
   },
   [types.LOAD_DATA]: context => {
-    [types. LOAD_BUDGETS](context)
-    [types. LOAD_PERIODS](context)
+    store.dispatch(types.LOAD_BUDGETS)
+    store.dispatch(types.LOAD_PERIODS)
   },
 }
