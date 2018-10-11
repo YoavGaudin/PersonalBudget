@@ -29,7 +29,6 @@ export const SET_MAX_PERIOD_ID = 'Period/SET_MAX_PERIOD_ID'
 // Mutations - Income
 export const ADD_INCOME = 'Income/ADD_INCOME'
 export const DELETE_INCOME = 'Income/DELETE_INCOME'
-export const SET_ALL_INCOMES = 'Income/SET_ALL_INCOMES'
 
 // Mutations - Category
 export const ADD_CATEGORY = 'ExpenseCategory/ADD_CATEGORY'
@@ -41,7 +40,6 @@ export const ADD_EXPENSE = 'Expense/ADD_EXPENSE'
 export const ADD_BUDGET = 'Budget/ADD_BUDGET'
 export const SET_BUDGET = 'Budget/SET_BUDGET'
 export const SET_ALL_BUDGETS = 'Budget/SET_ALL_BUDGETS'
-export const UPDATE_BUDGET = 'Budget/SET_BUDGET'
 
 
 // ############ ACTIONS ############
@@ -55,3 +53,8 @@ export const LOAD_PERIODS = 'Period/LOAD_PERIODS'
 // Actions - Budget
 export const SAVE_BUDGETS = 'Budget/SAVE_BUDGETS'
 export const LOAD_BUDGETS = 'Budget/LOAD_BUDGETS'
+
+// Actions - Income
+export const SAVE_INCOMES = 'Income/SAVE_INCOMES'
+export const LOAD_INCOMES = 'Income/LOAD_INCOMES'
+

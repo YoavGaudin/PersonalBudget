@@ -26,7 +26,7 @@ const getters = {
   [types.BUDGET]: state => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
     const budget = state.budgets.find((b, i) => b.periodId === parseInt(periodId) || i === state.budgets.length - 1)
-    return budget ? Object.assign(copyBudget(), {periodId: periodId}) : emptyBudget
+    return budget ? Object.assign(copyBudget(budget), {periodId: periodId}) : emptyBudget
   },
   [types.TOTAL_EXPENSE]: state => {
     const budget = store.getters[types.BUDGET]
@@ -68,7 +68,6 @@ const actions = {
     axiosInstance.put('budgets.json', state.budgets)
       .then(response => {
         // JSON responses are automatically parsed.
-        alert("Data has been saved to server")
       })
       .catch(e => {
         alert("Data failed to save")

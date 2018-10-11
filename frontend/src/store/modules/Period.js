@@ -69,7 +69,6 @@ const actions = {
     axiosInstance.put('periods.json', state)
       .then(response => {
         // JSON responses are automatically parsed.
-        alert("Data has been saved to server")
       })
       .catch(e => {
         alert("Data failed to save")

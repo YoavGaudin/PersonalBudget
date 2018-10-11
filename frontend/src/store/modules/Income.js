@@ -1,5 +1,6 @@
 import * as types from '../types'
 import {store} from '../../store/store'
+import axiosInstance from '../axios'
 
 const state = {
   incomes: []
@@ -36,7 +37,10 @@ const getters = {
 const mutations = {
   [types.ADD_INCOME]: (state, payload) => {
     const periodId = store.getters[types.ACTIVE_PERIOD]
-    const newIncome = Object.assign({periodId: periodId, id: getAvailableId(state.incomes)}, payload)
+    if (!payload.hasOwnProperty('periodId') || payload.periodId === null) {
+      Object.assign(payload, {periodId: periodId})
+    }
+    const newIncome = Object.assign({id: getAvailableId(state.incomes)}, payload)
     state.incomes.push(newIncome)
   },
   [types.DELETE_INCOME]: (state, payload) => {
@@ -44,7 +48,23 @@ const mutations = {
   }
 }
 
-const actions = {}
+const actions = {
+  [types.SAVE_INCOMES]: (context) => {
+    axiosInstance.put('incomes.json', state.incomes)
+      .then(response => {
+        // JSON responses are automatically parsed.
+      })
+      .catch(e => {
+        alert("Data failed to save")
+      })
+  },
+  [types.LOAD_INCOMES] : ({state, commit}) => {
+    axiosInstance.get('incomes.json')
+      .then(response => {
+        response.data.forEach(i => commit(types.ADD_INCOME, i))
+      })
+  }
+}
 
 export default {
   state,
