@@ -43,8 +43,13 @@ const mutations = {
     const newIncome = Object.assign({id: getAvailableId(state.incomes)}, payload)
     state.incomes.push(newIncome)
   },
+  [types.SET_INCOME]: (state, payload) => {
+    const incomeIndex = state.incomes.findIndex(income => income.id === payload.id)
+    state.incomes.splice(incomeIndex, 1, Object.assign({}, state.incomes[incomeIndex], payload))
+  },
   [types.DELETE_INCOME]: (state, payload) => {
-
+    const incomeIndex = state.incomes.findIndex(income => income.id === payload.id)
+    state.incomes.splice(incomeIndex, 1)
   }
 }
 

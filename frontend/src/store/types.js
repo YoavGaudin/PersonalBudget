@@ -28,6 +28,7 @@ export const SET_MAX_PERIOD_ID = 'Period/SET_MAX_PERIOD_ID'
 
 // Mutations - Income
 export const ADD_INCOME = 'Income/ADD_INCOME'
+export const SET_INCOME = 'Income/SET_INCOME'
 export const DELETE_INCOME = 'Income/DELETE_INCOME'
 
 // Mutations - Category

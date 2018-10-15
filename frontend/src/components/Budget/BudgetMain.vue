@@ -1,24 +1,6 @@
 <template>
   <b-card header="Main Budjet" v-if="budget">
-    <b-table small hover bordered fixed :fields="fields" :items="items">
-      <template slot="planned" slot-scope="data">
-        <span v-if="cellEditMode(data.item.key, 'planned')" @keypress.enter="exitEditMode">
-          <b-input v-money="{precision: 0}" size="sm" v-focus type="text"
-                   v-model="editedCell"></b-input>
-        </span>
-        <div v-else
-             @click.stop="enterEditMode(data.item.key, 'planned')">{{ data.value }}
-        </div>
-      </template>
-      <template slot="spent" slot-scope="data">
-        <div @click.stop="enterEditMode(data.item.key, 'spent')">{{ data.value }}
-        </div>
-      </template>
-      <template slot="diff" slot-scope="data">
-        <div>{{ data.value }}
-        </div>
-      </template>
-    </b-table>
+    <editable-table small hover bordered fixed :fields="fields" :items="items" @cellEdited="handleEdit"></editable-table>
     <b-btn v-if="!showForm" @click="showForm = true">Add</b-btn>
     <b-form v-if="showForm" inline @submit="createCategory">
       <b-input class="mr-2"
@@ -36,10 +18,10 @@
 </template>
 
 <script>
-  import {mapGetters, mapMutations, mapActions} from 'vuex'
+  import {mapGetters, mapMutations} from 'vuex'
   import * as types from '../../store/types.js'
   import money from '../../v-money/directive'
-  import {unformat, format} from '../../v-money/utils'
+  import EditableTable from '../utils/EditableTable'
 
   const emptyPlannedExpense = {planned: 0, spent: 0}
 
@@ -48,12 +30,10 @@
       return {
         fields: [
           {key: 'categoryName', label: 'Category', isRowHeader: true},
-          {key: 'planned', label: 'Planned', formatter: this.currencyFormatter},
-          {key: 'spent', label: 'Spent', formatter: this.currencyFormatter},
-          {key: 'diff', label: 'Diff', formatter: this.currencyFormatter},
+          {key: 'planned', label: 'Planned', editable: true, money:{precision: 0}},
+          {key: 'spent', label: 'Spent', money: null},
+          {key: 'diff', label: 'Diff', money: {}},
         ],
-        editMode: {row: null, col: null},
-        editedCell: null,
         showForm: false,
         formData: {name: '', description: null}
       }
@@ -90,27 +70,14 @@
         setBudget: types.SET_BUDGET,
         addCategory: types.ADD_CATEGORY
       }),
-      enterEditMode(row, col) {
-        this.editedCell = null
-        this.editMode = {row: row, col: col}
-      },
-      exitEditMode() {
-        this.budget.plannedExpenses[this.editMode.row] = Object.assign({}, emptyPlannedExpense,
+      handleEdit(payload) {
+        this.budget.plannedExpenses[payload.row] = Object.assign({}, emptyPlannedExpense,
           {
-            [this.editMode.col]: unformat(this.editedCell, 0)
+            [payload.col]: payload.value
           }
         )
         this.setBudget(this.budget)
-        this.editMode = {row: null, col: null}
       },
-      cellEditMode(row, col) {
-        return this.editMode.row === row && this.editMode.col === col
-      }
-      ,
-      currencyFormatter(value) {
-        return format(value)
-      }
-      ,
       createCategory(event) {
         event.preventDefault();
         this.showForm = false
@@ -129,6 +96,9 @@
       }
       ,
       money
+    },
+    components: {
+      EditableTable
     }
   }
 </script>

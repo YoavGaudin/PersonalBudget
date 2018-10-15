@@ -1,6 +1,8 @@
 <template>
   <b-card header="Incomes">
-    <b-table small hover :fields="fields" :items="items"></b-table>
+    <editable-table small hover :fields="fields" :items="items" @cellEdited="handleEdit">
+
+    </editable-table>
     <b-btn v-if="!showForm" @click="showForm = true">Add</b-btn>
     <b-form v-if="showForm" inline @submit.prevent="handleSubmit">
       <b-input class="mr-2"
@@ -23,13 +25,14 @@
   import * as types from '../../store/types.js'
   import money from '../../v-money/directive'
   import {format, unformat} from '../../v-money/utils'
+  import EditableTable from '../utils/EditableTable'
 
   export default {
     data() {
       return {
         fields: [
-          {key: 'label', label: 'Type'},
-          {key: 'value', label: 'Value', formatter: this.currencyFormatter},
+          {key: 'label', label: 'Type', editable: true},
+          {key: 'value', label: 'Value', money: {precision: 0}, editable: true},
         ],
         showForm: false,
         formData: {
@@ -43,7 +46,9 @@
         incomes: types.INCOMES
       }),
       items() {
-        return this.incomes
+        return this.incomes.map(income => {
+          return Object.assign({}, {key: income.id}, income)
+        })
       },
       newIncome() {
         return {
@@ -54,15 +59,19 @@
     },
     methods: {
       ...mapMutations({
-        addIncome: types.ADD_INCOME
+        addIncome: types.ADD_INCOME,
+        setIncome: types.SET_INCOME
       }),
       handleSubmit() {
         this.addIncome(this.newIncome)
         this.showForm = false
       },
-      currencyFormatter(value) {
-        return format(value)
+      handleEdit(payload) {
+        this.setIncome({id: payload.row, [payload.col]: payload.value})
       }
+    },
+    components: {
+      EditableTable
     },
     directives: {
       money
